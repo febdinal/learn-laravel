@@ -21,6 +21,7 @@ class CreateBlogsTable extends Migration
             $table->text('body')->comment('isi artikel');
             $table->softDeletes();
             $table->timestamps();
+            
         });
     }
 
