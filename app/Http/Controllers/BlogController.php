@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\BlogCategory;
+use App\Models\User;
 
 class BlogController extends Controller {
     /**
@@ -22,11 +24,12 @@ class BlogController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('blog.create');
+        $users = User::pluck('name','id');
+        return view('blog.create',['users'=>$users]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -47,9 +50,9 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id){
+        $blog = Blog::findOrFail($id);
+        return view('blog.show',compact('blog'));
     }
 
     /**
@@ -58,9 +61,9 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id){
+        $blog = Blog::findOrFail($id);
+        return view('blog.edit',compact('blog'));
     }
 
     /**
@@ -70,9 +73,15 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+        $blog = Blog::findOrFail($id);
+        $blog->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'user_id' => 2,
+            'category_id' => 2,
+        ]);
+        return redirect()->route('blog.index');
     }
 
     /**
@@ -81,8 +90,8 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+        Blog::findOrFail($id)->delete();
+        return redirect(route('blog.index'));
     }
 }

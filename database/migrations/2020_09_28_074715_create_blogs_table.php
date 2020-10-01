@@ -16,12 +16,11 @@ class CreateBlogsTable extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title')->comment('Judul blog');
-            $table->unsignedBigInteger('user_id')->comment('Foreign ket');
-            $table->unsignedBigInteger('category_id')->comment('Foreign ket');
+            $table->unsignedBigInteger('user_id')->comment('Foreign key');
+            $table->unsignedBigInteger('category_id')->comment('Foreign key');
             $table->text('body')->comment('isi artikel');
             $table->softDeletes();
             $table->timestamps();
-            
         });
     }
 

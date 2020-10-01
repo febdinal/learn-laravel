@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\BlogCategory;
 
-class BlogCategoryController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class BlogCategoryController extends Controller
      */
     public function index()
     {
-        $category = BlogCategory::all();
-        return view('blogcategory.index', compact('category'));
+        //
     }
 
     /**

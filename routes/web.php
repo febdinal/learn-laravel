@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,3 +20,4 @@ Route::get('/', function () {
 });
 
 Route::resource('/blog', BlogController::class);
+Route::resource('/blogcategory', BlogCategoryController::class);
