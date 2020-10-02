@@ -25,7 +25,8 @@ class BlogController extends Controller {
      */
     public function create() {
         $users = User::pluck('name','id');
-        return view('blog.create',['users'=>$users]);
+        $categories = BlogCategory::pluck('name','id');
+        return view('blog.create', compact('users','categories'));
     }
 
     /**
@@ -38,8 +39,8 @@ class BlogController extends Controller {
         $blog = Blog::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => 1,
-            'category_id' => 1,
+            'user_id' => $request->user_id,
+            'category_id' => $request->category_id,
         ]);
         return redirect()->route('blog.index');
     }

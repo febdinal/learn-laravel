@@ -5,9 +5,20 @@
 <form action="{{ route('blog.store') }}" method="POST">
     @csrf
     <div>
-        @foreach($users as $item)
-            <option value="{{$item->id}}">{{$item->name}}</option>
-        @endforeach
+        <p>Select user :</p>
+        <select name="user_id">
+            @foreach($users as $id => $name)
+                <option value="{{$id}}">{{$name}}</option>
+            @endforeach
+        </select>
+    </div>
+    <div>
+        <p>Select category:</p>
+        <select name="category_id">
+            @foreach($categories as $id => $name)
+                <option value="{{$id}}">{{$name}}</option>
+            @endforeach
+        </select>
     </div>
     <div>
         <input type="text" name="title" placeholder="Title">
