@@ -6,7 +6,7 @@
 @foreach ($blog as $item)
     <div class="blog-item">
         <div class="title">
-            <h2>{{ $item->title }}</h2>
+            <h3>{{ $item->title }}</h3>
         </div>
         <div class="body">
             {{ $item->body }}
@@ -16,7 +16,7 @@
           <p>Email : {{ $item->user->email }}</p> 
         </div>
         <div>
-        <p> Category : {{ $item->category->name}}</p>
+        <p> Category : {{ $item->category->name }}</p>
         </div>
         <a href="{{ route('blog.edit', $item->id) }}">Edit</a>
         <a href="{{ route('blog.show', $item->id) }}">lihat</a>
@@ -26,8 +26,9 @@
                 @csrf
                 <button> Hapus</button>
             </form>
+            
         </td>
     </div>
 @endforeach
-
+<a href="{{ route('blog.sampah') }}"> Sampah </a>
 @endsection

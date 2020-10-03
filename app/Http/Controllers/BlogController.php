@@ -36,6 +36,17 @@ class BlogController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $this->validate($request, [
+            'title' => 'required|max:15',
+            'body'  => 'required|min:10'
+        ],
+        [
+            'title.required' => 'Diperlukan Title',
+            'title.max'      => 'Title Harus Kurang dari 15 Huruf ',
+            'body.required'  => 'Diperlukan Konten',
+            'body.min'       => 'Konten Harus lebih dari 10 Huruf ',
+        ]);
+
         $blog = Blog::create([
             'title' => $request->title,
             'body' => $request->body,
@@ -92,7 +103,28 @@ class BlogController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
+
         Blog::findOrFail($id)->delete();
         return redirect(route('blog.index'));
+    }
+
+    public function sampah(){
+        $trash = Blog::onlyTrashed()->get();
+        return view('blog.sampah', compact('trash'));
+    }
+    
+    public function restore($id){
+        $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
+        if($blogInTrash) {
+            $blogInTrash->restore();
+        }
+        return redirect(route('blog.sampah'));
+    }
+    public function permanentdelete($id){
+        $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
+        if($blogInTrash) {
+            $blogInTrash->forceDelete();
+        }
+        return redirect(route('blog.sampah'));
     }
 }

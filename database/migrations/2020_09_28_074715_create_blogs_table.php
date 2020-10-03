@@ -21,6 +21,18 @@ class CreateBlogsTable extends Migration
             $table->text('body')->comment('isi artikel');
             $table->softDeletes();
             $table->timestamps();
+
+
+            /**
+             * CATATAN database migration :
+             * 
+             * method nullable() 
+             * digunakan untuk membolehkan kolom tabel boleh dikosongkan atau tidak di isi
+             * Apabila tidak diberikan nullable() kolom wajib berisi data baik itu string atau integer (nomor)
+             * 
+             *
+             * 
+             */
         });
     }
 
