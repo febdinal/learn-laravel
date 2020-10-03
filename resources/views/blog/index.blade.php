@@ -12,22 +12,25 @@
             {{ $item->body }}
         </div>
         <div>
-          <p>Nama : {{ $item->user->name }}</p> 
-          <p>Email : {{ $item->user->email }}</p> 
+          <p>Nama : {{ $item->user->name }} </p> 
+          <p>Email : {{ $item->user->email }} </p> 
         </div>
         <div>
-        <p> Category : {{ $item->category->name }}</p>
+            <p> Category : {{ $item->category->name }} </p>
         </div>
-        <a href="{{ route('blog.edit', $item->id) }}">Edit</a>
-        <a href="{{ route('blog.show', $item->id) }}">lihat</a>
-        <td> 
-            <form  method="POST" action="{{ route('blog.destroy', $item->id)}}">
-                @method('DELETE')
-                @csrf
-                <button> Hapus</button>
-            </form>
-            
-        </td>
+        @if (Auth::user()->id !== $item->user->id)
+            <a href="{{ route('blog.show', $item->id) }}">lihat</a>
+        @else
+            <a href="{{ route('blog.edit', $item->id) }}">Edit</a>
+            <td> 
+                <form  method="POST" action="{{ route('blog.destroy', $item->id)}}">
+                    @method('DELETE')
+                    @csrf
+                    <button> Hapus</button>
+                </form>
+                
+            </td>
+        @endif
     </div>
 @endforeach
 <a href="{{ route('blog.sampah') }}"> Sampah </a>

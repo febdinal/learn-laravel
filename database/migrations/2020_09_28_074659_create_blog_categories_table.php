@@ -19,7 +19,6 @@ class CreateBlogCategoriesTable extends Migration
             $table->string('slug')->unique()
                   ->comment('URL Category blog');
             $table->timestamps();
-
         });
     }
 
