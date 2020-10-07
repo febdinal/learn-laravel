@@ -46,6 +46,9 @@ class BlogController extends Controller {
                 'status' => 'berhasi'
             ]);
         }
+        return response()->json([
+            'status' => 'gagal'
+        ]);
     }
 
     /**
@@ -54,15 +57,13 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $blog = Blog::findorFail($id);
         return response()->json([
             'title' => $blog->title,
             'body' => $blog->body,
             'user' => $blog->user->name,
             'category' => $blog->category->name,
-            'Foo' => 'testetsetset'
         ]);
         
     }
@@ -95,11 +96,35 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        Blog::findOrFail($id)->forceDelete();
+    public function destroy($id){
+        Blog::findOrFail($id)->Delete();
         return response()->json([
             'status' => 'Berhasil Di Hapus'
+        ]);
+    }
+
+    public function sampah(){
+        $trash = Blog::onlyTrashed()->get();
+        // dd($trash);
+        return response()->json($trash);
+    }
+    
+    public function restore($id){
+        $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
+        if($blogInTrash) {
+            $blogInTrash->restore();
+        }
+        return response()->json([
+            'Status' => 'Berhasil di Restore'
+        ]);
+    }
+    public function deletepermanent($id){
+        $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
+        if($blogInTrash) {
+            $blogInTrash->forceDelete();
+        }
+        return response()->json([
+            'Status' => 'Berhasil di Hapus Permanent'
         ]);
     }
 }
