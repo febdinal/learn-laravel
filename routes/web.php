@@ -27,3 +27,7 @@ Route::get('/blog/sampah', [BlogController::class, 'sampah'])
         ->name('blog.sampah');
 Route::resource('/blog', BlogController::class);
 Route::resource('/blogcategory', BlogCategoryController::class);
+Auth::routes();
+Route::get('/home', function () {
+        return view('dashboard');
+});

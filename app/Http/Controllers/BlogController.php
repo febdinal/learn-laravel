@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\User;
+use Auth;
 
 class BlogController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth')->except(['show','index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,10 +29,11 @@ class BlogController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $users = User::pluck('name','id');
+        $user = Auth::user();
         $categories = BlogCategory::pluck('name','id');
-        return view('blog.create', compact('users','categories'));
+        return view('blog.create', compact('user','categories'));
     }
+
 
     /**
      * Store a newly created resource in storage
@@ -50,7 +56,7 @@ class BlogController extends Controller {
         $blog = Blog::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
             'category_id' => $request->category_id,
         ]);
         return redirect()->route('blog.index');
@@ -75,6 +81,10 @@ class BlogController extends Controller {
      */
     public function edit($id){
         $blog = Blog::findOrFail($id);
+        if(Auth::user()->id !== $blog->user->id) {
+            return abort(403);
+            // return redirect()->route('blog.index');
+        }
         return view('blog.edit',compact('blog'));
     }
 
@@ -90,8 +100,8 @@ class BlogController extends Controller {
         $blog->update([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => 2,
-            'category_id' => 2,
+            'user_id' => $blog->user->id,
+            'category_id' => $blog->category->id,
         ]);
         return redirect()->route('blog.index');
     }
