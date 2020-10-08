@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BlogController;
+use App\Http\Controllers\API\BlogCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,5 @@ Route::delete('/blog/deletepermanent/{id}', [BlogController::class, 'deleteperma
 Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
 });
+Route::apiResource('/blog/category', BlogCategoryController::class);
 Route::apiResource('/blog', BlogController::class);

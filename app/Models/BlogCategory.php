@@ -12,7 +12,7 @@ class BlogCategory extends Model
     protected $fillable = ['name','slug'];
     protected $table = 'blog_categories';
     
-    public function blog(){
+    public function blogs(){
         return $this->hasMany(Blog::class, 'category_id');
     }
 }

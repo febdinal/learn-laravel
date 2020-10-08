@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlog as BlogRequest;
+use App\Http\Requests\UpdateBlog as UpdateRequest;
 use App\Models\Blog;
+use App\Http\Resources\BlogResource;
+use App\Http\Resources\BlogCollection;
+
 
 class BlogController extends Controller {
     /**
@@ -14,27 +18,15 @@ class BlogController extends Controller {
      */
     public function index() {
         $blog = Blog::all();
-        // dd($blog);
-        return response()->json($blog);
+        return new BlogCollection($blog);
     }
-
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  use App\Requests\StoreBlog  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $this->validate($request, [
-            'title' => 'required',
-            'body'  => 'required'
-        ],
-        [
-            'title.required' => 'Diperlukan Title',
-            'title.max'      => 'Title Harus Kurang dari 15 Huruf ',
-            'body.required'  => 'Diperlukan Konten',
-            'body.min'       => 'Konten Harus lebih dari 10 Huruf ',
-        ]);
+    public function store(BlogRequest $request) {
         $blog = Blog::create([
             'title' => $request->title,
             'body' => $request->body,
@@ -43,14 +35,13 @@ class BlogController extends Controller {
         ]);
         if($blog) {
             return response()->json([
-                'status' => 'berhasi'
-            ]);
+                'status' => 'Post has been created successfully !'
+            ], 200);
         }
-        return response()->json([
-            'status' => 'gagal'
-        ]);
+            return response()->json([
+                'status' => 'gagal !'
+            ], 400);
     }
-
     /**
      * Display the specified resource.
      *
@@ -59,13 +50,7 @@ class BlogController extends Controller {
      */
     public function show($id) {
         $blog = Blog::findorFail($id);
-        return response()->json([
-            'title' => $blog->title,
-            'body' => $blog->body,
-            'user' => $blog->user->name,
-            'category' => $blog->category->name,
-        ]);
-        
+        return new BlogResource($blog);
     }
 
     /**
@@ -75,7 +60,7 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(UpdateRequest $request, $id) {
         $blog = Blog::findOrFail($id);
         $blog->update([
             'title' => $request->title,
@@ -89,7 +74,6 @@ class BlogController extends Controller {
             ]);
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

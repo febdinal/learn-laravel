@@ -21,7 +21,7 @@ class Blog extends Model
      * Variable $dates diisi apabila nama kolom dari table bukan 'deleted_at', 'created_at' atau 'updated_at'
      * Misalnya : 
      */
-    protected $fillable= ['title','body','user_id','category_id'];
+    protected $fillable = ['title','body','user_id','category_id'];
     public function category(){
         return $this->belongsTo(BlogCategory::class,'category_id');
     }
