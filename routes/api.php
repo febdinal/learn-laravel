@@ -17,15 +17,22 @@ use App\Http\Controllers\API\BlogCategoryController;
 */
 
 
-Route::get('/blog/sampah', [BlogController::class, 'sampah'])
-->name('blog.sampah');
+
+/*
+|---------------------------------------------------------
+| Blog
+|---------------------------------------------------------
+*/
+Route::get('/blog/trash', [BlogController::class, 'trash'])
+    ->name('blog.trash');
 Route::put('/blog/restore/{id}', [BlogController::class, 'restore'])
-->name('blog.restore');
-Route::delete('/blog/deletepermanent/{id}', [BlogController::class, 'deletepermanent'])
-->name('blog.deletepermanent');
+    ->name('blog.restore');
+Route::delete('/blog/force-delete/{id}', [BlogController::class, 'forceDelete'])
+    ->name('blog.force-delete');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
+    return $request->user();
 });
+
 Route::apiResource('/blog/category', BlogCategoryController::class);
 Route::apiResource('/blog', BlogController::class);

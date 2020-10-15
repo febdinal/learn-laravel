@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BlogCategory;
 
-class BlogCategoryController extends Controller
-{
+class BlogCategoryController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $category = BlogCategory::all();
-        return view('blogcategory.index', compact('category'));
+        return view('blog.category.index', compact('category'));
     }
 
     /**

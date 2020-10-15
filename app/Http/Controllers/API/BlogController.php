@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBlog as BlogRequest;
-use App\Http\Requests\UpdateBlog as UpdateRequest;
 use App\Models\Blog;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\BlogResource;
 use App\Http\Resources\BlogCollection;
-
+use App\Http\Requests\StoreBlog as BlogRequest;
+use App\Http\Requests\UpdateBlog as UpdateRequest;
 
 class BlogController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
@@ -28,19 +28,19 @@ class BlogController extends Controller {
      */
     public function store(BlogRequest $request) {
         $blog = Blog::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => $request->user_id,
-            'category_id' => $request->category_id,
+            'title'         => $request->title,
+            'body'          => $request->body,
+            'user_id'       => $request->user_id,
+            'category_id'   => $request->category_id,
         ]);
         if($blog) {
             return response()->json([
-                'status' => 'Post has been created successfully !'
+                'message' => 'Post has been created successful!'
             ], 200);
         }
-            return response()->json([
-                'status' => 'gagal !'
-            ], 400);
+        return response()->json([
+            'message' => 'Ca\'t create blog post!'
+        ], 400);
     }
     /**
      * Display the specified resource.
@@ -56,21 +56,21 @@ class BlogController extends Controller {
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\UpdateBlog  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request, $id) {
         $blog = Blog::findOrFail($id);
         $blog->update([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => $blog->user_id,
-            'category_id' => $blog->category_id,
+            'title'         => $request->title,
+            'body'          => $request->body,
+            'user_id'       => $blog->user_id,
+            'category_id'   => $blog->category_id,
         ]);
         if($blog) {
             return response()->json([
-                'status' => 'update berhasil'
+                'message' => 'Post has been updated!'
             ]);
         }
     }
@@ -80,35 +80,34 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function destroy($id) {
         Blog::findOrFail($id)->Delete();
         return response()->json([
-            'status' => 'Berhasil Di Hapus'
+            'message' => 'Post move to trash.'
         ]);
     }
 
-    public function sampah(){
+    public function trash() {
         $trash = Blog::onlyTrashed()->get();
-        // dd($trash);
         return response()->json($trash);
     }
     
-    public function restore($id){
+    public function restore($id) {
         $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
         if($blogInTrash) {
             $blogInTrash->restore();
         }
         return response()->json([
-            'Status' => 'Berhasil di Restore'
+            'message' => 'Post has been restored!'
         ]);
     }
-    public function deletepermanent($id){
+    public function forceDelete($id) {
         $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
         if($blogInTrash) {
             $blogInTrash->forceDelete();
         }
         return response()->json([
-            'Status' => 'Berhasil di Hapus Permanent'
+            'message' => 'Post has been deleted permanent!'
         ]);
     }
 }

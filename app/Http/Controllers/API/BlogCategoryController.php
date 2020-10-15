@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\BlogCategory;
 use App\Http\Controllers\Controller;
-// use Illuminate\Http\Request;
+use App\Http\Resources\BlogCategoryResource;
+use App\Http\Resources\BlogCategoryCollection;
 use App\Http\Requests\StoreBlogCategory as CategoryRequest;
 use App\Http\Requests\UpdateCategory as UpdateCategoryRequest;
-use App\Models\BlogCategory;
-use App\Http\Resources\BlogCategoryCollection;
-use App\Http\Resources\BlogCategoryResource;
 
 
-class BlogCategoryController extends Controller
-{
+class BlogCategoryController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +24,7 @@ class BlogCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StoreBlogCategory  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $request) {
@@ -36,13 +34,13 @@ class BlogCategoryController extends Controller
         ]);
         if($category) {
             return response()->json([
-                'Status' => 'Added Succesfully'
+                'message' => 'Blog category has been created!'
             ], 200);
         }
-            return response()->json([
-                'Status' => 'Added Not Succesfully'
-            ], 400);
-        }
+        return response()->json([
+            'message' => 'Can\'t create blog category'
+        ], 400);
+    }
 
     /**
      * Display the specified resource.
@@ -58,7 +56,7 @@ class BlogCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UpdateBlogCategory  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -67,17 +65,17 @@ class BlogCategoryController extends Controller
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug
-        ]);{
-        if($category){
-        return response()->json([
-            'Status' => 'Update Berhasil'
-            ] ,200);
-            }
+        ]);
+        if($category) {
             return response()->json([
-                'Status' => 'Update Gagal'
-            ] ,400);
+                'message' => 'Blog category has been updated'
+            ], 200);
         }
+        return response()->json([
+            'message' => 'Ca\'t update blog category'
+        ], 400);
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -87,7 +85,7 @@ class BlogCategoryController extends Controller
     public function destroy($id) {
         BlogCategory::findOrFail($id)->delete();
         return response()->json([
-            'Status' => 'Berhasil di dihilangkan'
+            'message' => 'Blog category has been deleted successful!'
         ]);
     }
 }

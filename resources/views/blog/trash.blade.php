@@ -23,7 +23,7 @@
             @csrf
             <button> Restore </button>
         </form>
-        <form  method="POST" action="{{ route('blog.permanentdelete', $item->id)}}">
+        <form  method="POST" action="{{ route('blog.force-delete', $item->id)}}">
             @method('DELETE')
             @csrf
             <button> Delete Permanently </button>
