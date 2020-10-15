@@ -10,8 +10,7 @@ class UpdateCategory extends FormRequest {
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -20,8 +19,7 @@ class UpdateCategory extends FormRequest {
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'name'  => ['required','min:3'],
             'slug'  => ['required','min:3']

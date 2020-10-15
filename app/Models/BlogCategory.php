@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\BlogCategoryController;
+use Illuminate\Database\Eloquent\Model;
 
-class BlogCategory extends Model
-{
+class BlogCategory extends Model {
     use HasFactory;
-    protected $fillable = ['name','slug'];
-    protected $table = 'blog_categories';
+
+    protected $fillable = [ 'name', 'slug' ];
     
-    public function blogs(){
+    /**
+    * Relationship between BlogCategory and Blog
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function blogs() {
         return $this->hasMany(Blog::class, 'category_id');
     }
 }

@@ -13,6 +13,7 @@ class BlogController extends Controller {
     public function __construct() {
         $this->middleware('auth')->except(['show','index']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +35,6 @@ class BlogController extends Controller {
         return view('blog.create', compact('user','categories'));
     }
 
-
     /**
      * Store a newly created resource in storage
      *
@@ -54,9 +54,9 @@ class BlogController extends Controller {
         ]);
 
         $blog = Blog::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => Auth::user()->id,
+            'title'     => $request->title,
+            'body'      => $request->body,
+            'user_id'   => Auth::user()->id,
             'category_id' => $request->category_id,
         ]);
         return redirect()->route('blog.index');
@@ -68,9 +68,9 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id){
+    public function show($id) {
         $blog = Blog::findOrFail($id);
-        return view('blog.show',compact('blog'));
+        return view('blog.show', compact('blog'));
     }
 
     /**
@@ -79,7 +79,7 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){
+    public function edit($id) {
         $blog = Blog::findOrFail($id);
         if(Auth::user()->id !== $blog->user->id) {
             return abort(403);
@@ -95,13 +95,13 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id) {
         $blog = Blog::findOrFail($id);
         $blog->update([
-            'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => $blog->user->id,
-            'category_id' => $blog->category->id,
+            'title'         => $request->title,
+            'body'          => $request->body,
+            'user_id'       => $blog->user->id,
+            'category_id'   => $blog->category->id,
         ]);
         return redirect()->route('blog.index');
     }
@@ -112,29 +112,28 @@ class BlogController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
-
+    public function destroy($id) {
         Blog::findOrFail($id)->delete();
         return redirect(route('blog.index'));
     }
 
-    public function sampah(){
-        $trash = Blog::onlyTrashed()->get();
-        return view('blog.sampah', compact('trash'));
+    public function trash() {
+        $blogInTrash = Blog::onlyTrashed()->get();
+        return view('blog.trash', compact('blogInTrash'));
     }
     
-    public function restore($id){
+    public function restore($id) {
         $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
         if($blogInTrash) {
             $blogInTrash->restore();
         }
-        return redirect(route('blog.sampah'));
+        return redirect(route('blog.trash'));
     }
-    public function permanentdelete($id){
+    public function forceDelete($id) {
         $blogInTrash = Blog::onlyTrashed()->where('id', $id)->first();
         if($blogInTrash) {
             $blogInTrash->forceDelete();
         }
-        return redirect(route('blog.sampah'));
+        return redirect(route('blog.trash'));
     }
 }
