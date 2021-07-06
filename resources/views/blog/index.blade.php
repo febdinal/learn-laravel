@@ -18,8 +18,8 @@
             {{ $item->body }}
          </div>
         <div>
-          <p>Nama : {{ $item->user->name }} </p> 
-          <p>Email : {{ $item->user->email }} </p> 
+          <p> Nama : {{ $item->user->name }} </p> 
+          <p> Email : {{ $item->user->email }} </p> 
         </div>
         <div>
             <p> Category : {{ $item->category->name }} </p>
@@ -32,7 +32,7 @@
                     <form  method="POST" action="{{ route('blog.destroy', $item->id)}}">
                         @method('DELETE')
                         @csrf
-                        <button> Hapus</button>
+                        <button> Hapus </button>
                     </form>
                 </td>
             @endif
